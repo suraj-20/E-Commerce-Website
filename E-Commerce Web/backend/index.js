@@ -6,6 +6,8 @@ const cors = require("cors");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
+const productRoute = require("./routes/product")
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 connectMognoDb(process.env.MONGO_URL);
@@ -19,6 +21,8 @@ app.use(express.static(path.resolve("uploads/images")));
 app.get("/", (req, res) => {
   res.send("Hello Devloper");
 });
+
+app.use("/", productRoute);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
