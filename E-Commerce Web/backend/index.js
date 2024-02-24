@@ -6,7 +6,8 @@ const cors = require("cors");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
-const productRoute = require("./routes/product")
+const productRoute = require("./routes/product");
+const userRoute = require("./routes/user");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -16,20 +17,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
-app.use(express.static(path.resolve("uploads/images")));
+app.use(express.static(path.resolve("uploads")));
 
 app.get("/", (req, res) => {
   res.send("Hello Devloper");
 });
 
 app.use("/", productRoute);
+app.use("/user", userRoute);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, path.resolve(`./uploads/images`));
   },
   filename: function (req, file, cb) {
-    return cb(null, `${Date.now()}-${path.extname(file.originalname)}`);
+    return cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
