@@ -7,7 +7,8 @@ const multer = require("multer");
 const cookieParser = require("cookie-parser");
 
 const productRoute = require("./routes/product");
-const userRoute = require("./routes/user");
+const userRoute = require("./routes/user.js");
+const { checkForAuthenticationCookie } = require("./middlewares/auth.js");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -16,6 +17,7 @@ connectMognoDb(process.env.MONGO_URL);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
+app.use(checkForAuthenticationCookie("token"));
 app.use(cors());
 app.use(express.static(path.resolve("uploads")));
 
