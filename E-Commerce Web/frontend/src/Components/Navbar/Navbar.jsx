@@ -16,9 +16,9 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="nav-logo">
-      <div className="menu-icon" onClick={handleClick}>
-        <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
-      </div>
+        <div className="menu-icon" onClick={handleClick}>
+          <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
+        </div>
         <img src={logo} alt="logo" />
         <p>Shopify</p>
       </div>
@@ -66,9 +66,21 @@ const Navbar = () => {
         </li>
       </ul>
       <div className="nav-login-cart">
-        <Link to="/login">
-          <button>Login</button>
-        </Link>
+        {localStorage.getItem("Auth-token") ? (
+          <button
+            onClick={() => {
+              localStorage.removeItem("Auth-token");
+              window.location.replace("/");
+            }}
+          >
+            Logout
+          </button>
+        ) : (
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
+        )}
+
         <Link to="/cart">
           <img src={cart_icon} alt="cart_icon" />
         </Link>

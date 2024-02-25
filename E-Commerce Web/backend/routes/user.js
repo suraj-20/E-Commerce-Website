@@ -4,25 +4,30 @@ const User = require("../models/user");
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  let check = await User.findOne({ email: req.body.email });
-  if (check) {
-    return res.status(400).json({ success: false, error: "Existing user" });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.json({ error: "Email already Exist" });
+    }
+
+    let cart = {};
+    for (let i = 0; i < 100; i++) {
+      cart[i] = 0;
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      cartData: cart,
+    });
+    
+    return res.json({ success: true, user });
+  } catch (error) {
+    return res.json({ error: "Internal server Error" });
   }
-  let cart = {};
-  for (let i = 0; i < 100; i++) {
-    cart[i] = 0;
-  }
-
-  const user = await User.create({
-    name,
-    email,
-    password,
-    cartData: cart,
-  });
-
-  return res.status(200).json({ success: true, user });
 });
 
 router.post("/login", async (req, res) => {
