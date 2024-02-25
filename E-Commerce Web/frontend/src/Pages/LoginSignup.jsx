@@ -52,7 +52,7 @@ const LoginSignup = () => {
 
     if (responseData.success) {
       localStorage.setItem("Auth-token", responseData.token);
-      window.location.replace("/");
+      window.location.replace("/login");
       console.log("User created");
     } else {
       alert(responseData.error);

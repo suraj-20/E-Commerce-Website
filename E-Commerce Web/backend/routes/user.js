@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
       password,
       cartData: cart,
     });
-    
+
     return res.json({ success: true, user });
   } catch (error) {
     return res.json({ error: "Internal server Error" });
@@ -35,7 +35,8 @@ router.post("/login", async (req, res) => {
 
   try {
     const token = await User.matchPasswordAndGenerateToken(email, password);
-    return res.cookie("token", token).json({ success: true, token });
+    // console.log(token);
+    return res.json({ success: true, token });
   } catch (error) {
     return res.json({ error: "Incorrect Email or password" });
   }

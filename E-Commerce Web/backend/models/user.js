@@ -45,27 +45,31 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-userSchema.static("matchPasswordAndGenerateToken", async function (email, password) {
-  const user = await this.findOne({ email });
+userSchema.static(
+  "matchPasswordAndGenerateToken",
+  async function (email, password) {
+    const user = await this.findOne({ email });
 
-  if (!user) throw new Error("User not found!");
+    if (!user) throw new Error("User not found!");
 
-  const salt = user.salt;
-  const hashedPassword = user.password;
+    const salt = user.salt;
+    const hashedPassword = user.password;
 
-//   console.log("hashedPassword", hashedPassword);
+    //   console.log("hashedPassword", hashedPassword);
 
-  const userProvidedHash = createHmac("sha256", salt)
-    .update(password)
-    .digest("hex");
+    const userProvidedHash = createHmac("sha256", salt)
+      .update(password)
+      .digest("hex");
 
-//   console.log("userProvidedHash", userProvidedHash);
+    //   console.log("userProvidedHash", userProvidedHash);
 
-  if (hashedPassword !== userProvidedHash) throw new Error("Incorrect Password");
+    if (hashedPassword !== userProvidedHash)
+      throw new Error("Incorrect Password");
 
-  const token = createTokenForUser(user);
-  return token;
-});
+    const token = createTokenForUser(user);
+    return token;
+  }
+);
 
 const User = mongoose.model("user", userSchema);
 

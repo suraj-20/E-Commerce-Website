@@ -39,3 +39,17 @@ module.exports.getAllProducts = async (req, res) => {
 
   res.status(200).json({ msg: "Get All Products", product });
 };
+
+module.exports.newCollection = async (req, res) => {
+  const products = await Product.find({});
+  const newCollections = products.slice(1).slice(-8);
+  // console.log("New Collection fetched");
+  res.json({ success: true, newCollections });
+};
+
+module.exports.popularInWomen = async (req, res) => {
+  const products = await Product.find({ category: "women" });
+  const popularInWomens = products.slice(0, 4);
+  // console.log(popularInWomens);
+  res.json({ success: true, popularInWomens });
+};
