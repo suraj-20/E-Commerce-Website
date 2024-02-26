@@ -42,6 +42,7 @@ const ShopContextProvider = (props) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     // console.log(cartItems);
     if (localStorage.getItem("Auth-token")) {
+      console.log(process.env.REACT_APP_BASE_URL);
       fetch(`https://${process.env.REACT_APP_BASE_URL}/cart/addToCart`, {
         method: "POST",
         headers: {
@@ -52,7 +53,8 @@ const ShopContextProvider = (props) => {
         body: JSON.stringify({ itemId: itemId }),
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => console.log(data))
+        .catch((error) => console.log(error));
     }
   };
 
