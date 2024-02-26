@@ -19,8 +19,10 @@ const Navbar = () => {
         <div className="menu-icon" onClick={handleClick}>
           <i className={clicked ? "fas fa-times" : "fas fa-bars"}></i>
         </div>
-        <img src={logo} alt="logo" />
-        <p>Shopify</p>
+        <Link to={"/"} className="navbar-logo">
+          <img src={logo} alt="logo" />
+          <p>Shopify</p>
+        </Link>
       </div>
 
       <ul className={clicked ? "nav-menu active" : "nav-menu"}>
