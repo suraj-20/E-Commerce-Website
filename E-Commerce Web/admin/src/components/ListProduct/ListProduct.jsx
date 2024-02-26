@@ -5,7 +5,7 @@ const ListProduct = () => {
   console.log(Array.isArray(allProducts));
 
   const fetchInfo = async () => {
-    await fetch("http://localhost:3000/getAllProducts")
+    await fetch(`https://${process.env.REACT_APP_BASE_URL}/getAllProducts`)
       .then((res) => res.json())
       .then((data) => {
         setAllProducts(data.product);
@@ -18,7 +18,7 @@ const ListProduct = () => {
   }, []);
 
   const removeProduct = async (id) => {
-    await fetch("http://localhost:3000/deleteProduct", {
+    await fetch(`https://${process.env.REACT_APP_BASE_URL}/deleteProduct`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",

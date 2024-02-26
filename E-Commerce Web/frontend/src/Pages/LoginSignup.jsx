@@ -16,7 +16,7 @@ const LoginSignup = () => {
   const login = async () => {
     console.log("User logged in", formData);
     let responseData;
-    await fetch("http://localhost:3000/user/login", {
+    await fetch(`https://${process.env.REACT_APP_BASE_URL}/user/login`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -39,7 +39,7 @@ const LoginSignup = () => {
     console.log("User Signed up", formData);
 
     let responseData;
-    await fetch("http://localhost:3000/user/register", {
+    await fetch(`https://${process.env.REACT_APP_BASE_URL}/user/register`, {
       method: "POST",
       headers: {
         Accept: "application/json",
