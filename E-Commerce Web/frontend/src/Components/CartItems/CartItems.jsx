@@ -1,10 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CartItems.css";
 import { ShopContext } from "../../Contexts/ShopContext";
 // import remove_icon from "../Assets/cart_cross_icon.png";
 const CartItems = () => {
-  const { getTotalCartAmount, all_product, cartItems, addToCart, removeFromCart } =
-    useContext(ShopContext);
+  const {
+    getTotalCartAmount,
+    all_product,
+    cartItems,
+    addToCart,
+    removeFromCart,
+  } = useContext(ShopContext);
+
+  const [subtotal, setSubtotal] = useState(null);
+
+  useEffect(() => {
+    const calculateSubtotal = async () => {
+      const totalAmount = await getTotalCartAmount();
+      setSubtotal(totalAmount);
+    };
+
+    calculateSubtotal();
+  }, [getTotalCartAmount]);
   return (
     <div className="cartitems">
       <div className="cartitems-format-main">
@@ -16,7 +32,7 @@ const CartItems = () => {
         <p>Add/Remove</p>
       </div>
       <hr />
-      {all_product.map((e,i) => {
+      {all_product.map((e, i) => {
         if (cartItems[e.id] > 0) {
           return (
             <div key={i}>
@@ -49,7 +65,8 @@ const CartItems = () => {
               <hr />
             </div>
           );
-        } return null
+        }
+        return null;
       })}
       <div className="cartitems-down">
         <div className="cartiems-total">
@@ -57,7 +74,7 @@ const CartItems = () => {
           <div>
             <div className="cartitems-total-item">
               <p>Subtotal</p>
-              <p>${getTotalCartAmount()}</p>
+              <p>${subtotal !== null ? subtotal : "Loading..."}</p>
             </div>
             <hr />
             <div className="cartitems-total-item">
@@ -66,7 +83,7 @@ const CartItems = () => {
             </div>
             <div className="cartitems-total-item">
               <h3>Total</h3>
-              <h3>${getTotalCartAmount()}</h3>
+              <h3>${subtotal !== null ? subtotal : "Loading..."}</h3>
             </div>
           </div>
           <button>PROCEED TO CHECKOUT</button>

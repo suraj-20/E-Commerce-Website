@@ -19,6 +19,7 @@ const ShopContextProvider = (props) => {
       .then((res) => res.json())
       .then((data) => {
         setAll_Product(data.product);
+        console.log(data);
       });
 
     if (localStorage.getItem("Auth-token")) {
@@ -42,7 +43,6 @@ const ShopContextProvider = (props) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     // console.log(cartItems);
     if (localStorage.getItem("Auth-token")) {
-      console.log(process.env.REACT_APP_BASE_URL);
       fetch(`https://${process.env.REACT_APP_BASE_URL}/cart/addToCart`, {
         method: "POST",
         headers: {
@@ -75,17 +75,20 @@ const ShopContextProvider = (props) => {
     }
   };
 
-  const getTotalCartAmount = () => {
+  const getTotalCartAmount = async () => {
     let totalAmount = 0;
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = all_product.find(
           (product) => product.id === Number(item)
         );
-        totalAmount += itemInfo.new_price * cartItems[item];
+        console.log("itemInfo", itemInfo);
+        if (itemInfo) {
+          totalAmount += itemInfo.new_price * cartItems[item];
+        }
       }
     }
-    // console.log(totalAmount);
+    console.log(totalAmount);
     return totalAmount;
   };
 
@@ -96,6 +99,7 @@ const ShopContextProvider = (props) => {
         totalItem += cartItems[item];
       }
     }
+    console.log(totalItem);
     return totalItem;
   };
 
