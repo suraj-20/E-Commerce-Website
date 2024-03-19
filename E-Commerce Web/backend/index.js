@@ -9,7 +9,10 @@ const cookieParser = require("cookie-parser");
 const productRoute = require("./routes/product");
 const userRoute = require("./routes/user.js");
 const cartRoute = require("./routes/cart.js");
-const { checkForAuthenticationCookie, fetchUser } = require("./middlewares/auth.js");
+const {
+  checkForAuthenticationCookie,
+  fetchUser,
+} = require("./middlewares/auth.js");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -42,10 +45,24 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.post("/upload", upload.single("product"), (req, res) => {
-  res.json({
-    success: 1,
-    image_url: `/images/${req.file.filename}`,
-  });
+  console.log(req.body, req.file);
+  console.log("Received request to /upload");
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: 0, message: "No file uploaded" });
+    }
+
+    console.log("File uploaded successfully");
+
+    res.json({
+      success: 1,
+      image_url: `http://localhost:3000/images/${req.file.filename}`,
+    });
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    res.status(500).json({ success: 0, message: "File upload failed" });
+  }
+  console.log("Request processed successfully");
 });
 
 app.listen(PORT, () => {

@@ -28,7 +28,7 @@ const AddProduct = () => {
     let formData = new FormData();
     formData.append("product", image);
     console.log(import.meta.env.VITE_APP_BASE_URL);
-    await fetch(`https://${import.meta.env.VITE_APP_BASE_URL}/upload`, {
+    await fetch(`http://localhost:3000/upload`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -40,11 +40,12 @@ const AddProduct = () => {
         responseData = data;
         console.log(data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error("Eroor uploading inmage:", error));
 
-    if (responseData.success) {
+    if (responseData && responseData.success) {
       product.image = responseData.image_url;
       console.log(product.image);
+      console.log("Image upload response:", responseData);
       await fetch(`https://${import.meta.env.VITE_APP_BASE_URL}/addProduct`, {
         method: "POST",
         headers: {
@@ -56,7 +57,7 @@ const AddProduct = () => {
         .then((res) => res.json())
         .then((data) => {
           data ? alert("Product Added") : alert("Failed");
-          console.log(data.success);
+          console.log(data);
         });
     }
   };
